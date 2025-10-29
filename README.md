@@ -25,7 +25,7 @@ firmware/
    - **Web Service** (Python) con start: `gunicorn -k uvicorn.workers.UvicornWorker -w 1 main:app`
    - **PostgreSQL** (plan free) y pondrá `DATABASE_URL` en el servicio.
 4. En el servicio web, agrega (opcional) variable **API_KEY** para proteger el `POST`.
-5. Espera a que se construya. Tu URL será algo como: `https://iot-command-api.onrender.com`
+5. Espera a que se construya. Tu URL será algo como: `https://ESP32_MAKE.onrender.com`
 
 ### Endpoints
 - `GET  /health`
