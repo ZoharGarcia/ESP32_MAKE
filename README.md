@@ -1,16 +1,16 @@
-# IoT Make + Telegram + ESP32 on Render (FastAPI + PostgreSQL)
+# Make + Telegram + ESP32 on Render (FastAPI + PostgreSQL)
 
 API simple para enviar/leer comandos `cool_on/cool_off` por `device_id`. 
 Pensada para integrarse con **Make (Integromat)** y controlar un **ESP32** que simula enfriamiento con un LED.
-- **ESP32**: envía telemetría a Make (webhook) y consulta `GET /device/{id}/command`.
+- **ESP32**: envía a Make (webhook) y consulta `GET /device/{id}/command`.
 - **Make**: si hay alerta → Telegram; si dices "enfriar"/"apagar" en Telegram → `POST /device/{id}/command`.
-- **Render**: aloja FastAPI + PostgreSQL (persistente).
+- **Render**: FastAPI + PostgreSQL (persistente).
 
 ## Estructura
 ```
 main.py               # FastAPI + SQLAlchemy (Postgres)
 requirements.txt
-render.yaml           # Infra: web service + DB (plan free)
+render.yaml           # Infra: web service + DB 
 .env.example
 firmware/
   esp32/
@@ -34,16 +34,8 @@ firmware/
   - Headers opcionales: `x-api-key: <API_KEY>`
   - Body: `{"command":"cool_on"}` o `"cool_off"`
 
-### Pruebas rápidas
-```bash
-curl https://<tu-servicio>.onrender.com/health
 
-curl https://<tu-servicio>.onrender.com/device/esp32-demo-01/command
-
-curl -X POST https://<tu-servicio>.onrender.com/device/esp32-demo-01/command   -H "Content-Type: application/json"   -H "x-api-key: supersecretkey"   -d '{"command":"cool_on"}'
-```
-
-## Make (Integromat)
+## Make
 
 **Escenario A — Webhook → Telegram (alerta)**
 1. Crea **Custom Webhook**; copia su URL.
@@ -55,9 +47,9 @@ curl -X POST https://<tu-servicio>.onrender.com/device/esp32-demo-01/command   -
 2. **Router** con 2 rutas:
    - Si mensaje contiene `enfriar` → `POST https://<tu-servicio>.onrender.com/device/esp32-demo-01/command` con `{"command":"cool_on"}`.
    - Si mensaje contiene `apagar` → igual con `cool_off`.
-3. (Opcional) Responde con “✅ activado” / “🛑 desactivado”.
+3. (Opcional) Responde con “activado” / “desactivado”.
 
-## Firmware ESP32 (Arduino)
+## ESP32 
 Abre `firmware/esp32/esp32_dht_demo.ino` y configura:
 - `WIFI_SSID`, `WIFI_PASS`
 - `API_BASE = "https://<tu-servicio>.onrender.com"`
@@ -68,6 +60,6 @@ Abre `firmware/esp32/esp32_dht_demo.ino` y configura:
 **Librerías**: `DHT sensor library` (Adafruit), `Adafruit Unified Sensor`
 
 ## Seguridad
-- Mantén secreto el Webhook de Make.
-- Usa API_KEY para los POST.
-- PostgreSQL gestionado por Render (credenciales env); no subas `.env` al repo.
+- Usar Webhook propio de Make.
+- Usar API_KEY para los POST.
+- PostgreSQL gestionado por Render (credenciales env)
