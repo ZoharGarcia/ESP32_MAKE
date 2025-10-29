@@ -7,12 +7,11 @@ from sqlalchemy.exc import OperationalError
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL not set")
+    raise RuntimeError("DATABASE_URL no identificada")
 
-# Create engine
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
-# Init table
+# Tabla Init
 def init_db():
     with engine.begin() as conn:
         conn.execute(text("""
@@ -24,14 +23,14 @@ def init_db():
 
 init_db()
 
-app = FastAPI(title="IoT Command API (Render + FastAPI + Postgres)")
+app = FastAPI(title="Control API")
 
 class CommandIn(BaseModel):
-    command: str  # "cool_on" | "cool_off"
+    command: str 
 
 @app.get("/health")
 def health():
-    # Quick DB check
+    # DB
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
