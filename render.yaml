@@ -14,3 +14,4 @@ services:
 databases:
   - name: iot-command-db
     plan: free
+    
