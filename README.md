@@ -1,7 +1,7 @@
 # Make + Telegram + ESP32 con Render (FastAPI + PostgreSQL)
 
 API simple para enviar/leer comandos `cool_on/cool_off` por `device_id`. 
-Pensada para integrarse con **Make (Integromat)** y controlar un **ESP32** que simula enfriamiento con un LED.
+Para usar **Make** y controlar un **ESP32** que simula enfriamiento con un LED.
 - **ESP32**: envía a Make (webhook) y consulta `GET /device/{id}/command`.
 - **Make**: Si la temperatura aumenta → Telegram; mensaje de "enfriar"/"apagar" en Telegram → `POST /device/{id}/command`.
 - **Render**: FastAPI + PostgreSQL 
